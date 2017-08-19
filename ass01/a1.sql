@@ -39,11 +39,11 @@ create domain OptionType as
 	varchar(12) check (value in ('sunroof','moonroof','GPS','alloy wheels','leather'));
 
 create domain MonetaryAmounts as
-	NUMERIC(2, 8) check (value > 0);
+	NUMERIC(8, 2) check (value > 0);
 
 -- RepairJob
 create domain JobNumber as
-	integer(3) check (value > 0);
+	integer check (value > 0 and value < 1000);
 
 
 -- EMPLOYEE
@@ -66,14 +66,14 @@ create table Employee (
 create table Client (
 	CID         serial primary key,
 	Name 		varchar(100) not null,
-	Address 	varchar(200) not null，
+	Address 	varchar(200) not null,
 	Phone 		PhoneType not null,
 	Email 		EmailType,
 	ABN 		ABNType,
 	URL 		URLType,
 	constraint ValidPersonalClient check (
-		（ABN is null and URL is null）or		-- if it is a person
-	 	 (ABN is not null)	-- if it is a company
+		(ABN is null and URL is null)or		-- if it is a person
+	 	(ABN is not null)	-- if it is a company
 	)
 );
 
@@ -81,14 +81,14 @@ create table Client (
 create table Car (
 	VIN 	VINType primary key,
 	manufacturer	varchar(40) not null,
-	model 	varchar(40 not null),
-	year 	integer(4) constraint ValidYear check (year >= 1970 and year <= 2099) not null,
-	cost 	MonetaryAmounts,
+	model 	varchar(40) not null,
+	year 	integer constraint ValidYear check (year >= 1970 and year <= 2099) not null,
+	"cost" 	MonetaryAmounts,
 	charges MonetaryAmounts,
 	plateNumber CarLicenseType unique,
-	CONSTRAINT ValidCarType check (
-		(cost is not null and charges is not null and plateNumber is null) or 	-- if it is a used car 
-		(cost is null and charges is null and plateNumber is not null)		-- if it is a new car
+	constraint ValidCarType check (
+		("cost" is not null and charges is not null and plateNumber is null) or 	-- if it is a used car 
+		("cost" is null and charges is null and plateNumber is not null)		-- if it is a new car
 	)
 );
 
@@ -100,31 +100,34 @@ create table Option (
 
 -- RepairJob
 create table RepairJob (
-	"number" JobNumber primary key,
-	Car 	VINType references Car(VIN) primary key,
+	"number" JobNumber,
+	Car 	VINType references Car(VIN) not null unique,
+	primary key("number", Car),
 	plateNumber CarLicenseType references Car(plateNumber) not null unique,
 	Client 	integer references Client(CID) not null unique,
 	Description  varchar(250) not null,
 	PartsCost   MonetaryAmounts not null,
 	WorkCost	MonetaryAmounts not null,
-	"Date"		date not null,
-)
+	"Date"		date not null
+);
 
 -- Does
-creat table Does (
-	"number" JobNumber primary key,
-	Car 	VINType references RepairJob(Car) primary key,
-	Mechanic 	integer references Employee(EID) primary key,
+create table Does (
+	"number" JobNumber,
+	Car VINType references RepairJob(Car),
+	Mechanic 	integer references Employee(EID),
+	primary key("number", Car, Mechanic),
 	license 	MechanicLicenseType references Employee(license) not null unique
 );
 
 --Buys
 create table Buys (
-	Car VINType references Car(VIN) primary key,
-	"Date"	date not null primary key,
+	Car VINType references Car(VIN),
+	"Date"	date,
+	primary key(Car, "Date"),
 	plateNumber CarLicenseType references Car(plateNumber) not null unique,
 	Salesman integer references Employee(EID) not null unique,
-	CommRate 	integer references Employee(CommRate) not null,
+	-- CommRate 	integer references Employee(CommRate) not null,
 	Client integer references Client(CID) not null,
 	price MonetaryAmounts not null,
 	commission MonetaryAmounts not null
@@ -132,11 +135,12 @@ create table Buys (
 
 --Sells
 create table Sells (
-	Car VINType references Car(VIN) primary key,
-	"Date"	date not null primary key,
+	Car VINType references Car(VIN),
+	"Date"	date,
+	primary key(Car, "Date"),
 	plateNumber CarLicenseType references Car(plateNumber) not null unique,
 	Salesman integer references Employee(EID) not null unique,
-	CommRate 	integer references Employee(CommRate) not null,
+	-- CommRate 	integer references Employee(CommRate) not null,
 	Client integer references Client(CID) not null,
 	price MonetaryAmounts not null,
 	commission MonetaryAmounts not null
@@ -145,12 +149,10 @@ create table Sells (
 --SellsNew
 create table SellsNew (
 	plateNumber CarLicenseType primary key,
-	cost 	MonetaryAmounts references car(cost) not null,
-	charges MonetaryAmounts references car(charges) not null,
 	Car VINType references Car(VIN) not null unique,
 	"Date"	date not null not null,
 	Salesman integer references Employee(EID) not null unique,
-	CommRate 	integer references Employee(CommRate) not null,
+	-- CommRate 	integer references Employee(CommRate) not null,
 	Client integer references Client(CID) not null,
 	price MonetaryAmounts not null,
 	commission MonetaryAmounts not null
