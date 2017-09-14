@@ -28,3 +28,6 @@ create tigger
 ```
 - trim: remove space before or after str
 - upper: put everything into upper case
+
+# PostgreSQL
+- sudo su postgres
