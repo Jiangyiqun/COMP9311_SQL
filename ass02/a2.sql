@@ -72,3 +72,10 @@ select Sector, Industry, count(*)
 from Category
 group by Industry, Sector
 order by Sector, Industry;
+
+-- Qustion 10
+create or replace view Q10(Code, Industry) AS
+select Code, Industry
+from Category
+group by Industry
+having count(*) = 1;
