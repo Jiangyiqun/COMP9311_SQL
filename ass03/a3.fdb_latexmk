@@ -1,7 +1,7 @@
 # Fdb version 3
-["pdflatex"] 1507449928 "/home/z5129432/Github/COMP9311_SQL/ass03/a3.tex" "a3.pdf" "a3" 1507449928
+["pdflatex"] 1507705684 "/home/z5129432/Github/COMP9311_SQL/ass03/a3.tex" "a3.pdf" "a3" 1507705684
   "/etc/texmf/web2c/texmf.cnf" 1506757119 1101 af7716885e081ab43982cab7b4672c1a ""
-  "/home/z5129432/Github/COMP9311_SQL/ass03/a3.tex" 1507449927 5232 889455bb7f15b2e7d978c68ec955ef1e ""
+  "/home/z5129432/Github/COMP9311_SQL/ass03/a3.tex" 1507705684 6206 cb285bab44c44a803904344ca3ce2b65 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -90,11 +90,13 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1503343927 31343 93828589fb0cea665e553ee5a17ad2d4 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1506757172 1863403 f3ff9a4253bcb5fb9a9baaf0c572cb01 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1506757257 3883867 20851280eda376d8c8e6f93aeabce312 ""
-  "a3.aux" 1507449928 662 b2b94621371df8d9296b8bf5bec1b851 ""
-  "a3.out" 1507449928 0 d41d8cd98f00b204e9800998ecf8427e ""
-  "a3.tex" 1507449927 5232 889455bb7f15b2e7d978c68ec955ef1e ""
+  "41.png" 1507704741 482897 d201da5dfbf3200f8bc3c5694817256e ""
+  "42.png" 1507705290 639318 535047628f6fc5a60c1e86dbc532035b ""
+  "a3.aux" 1507705684 662 b2b94621371df8d9296b8bf5bec1b851 ""
+  "a3.out" 1507705684 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "a3.tex" 1507705684 6206 cb285bab44c44a803904344ca3ce2b65 ""
   (generated)
   "a3.out"
   "a3.aux"
-  "a3.pdf"
   "a3.log"
+  "a3.pdf"

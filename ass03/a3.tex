@@ -28,7 +28,7 @@
 \author{Jack Jiang (z5129432)}
 \date{ 8 October 2017 }
 \maketitle
-\graphicspath{{Graphics/}}
+\graphicspath{{/}}
 
 
 \section*{Question 1}
@@ -108,38 +108,62 @@
     \item
     Proj[Name](Company Join[Sector='Technology'] Category)
     \item
-    Proj[Code](Sel[Person > 5](Code g cout(Person)(Executive)))
+    Proj[Code](Sel[Person $>$ 5](GroupBy[Code]Cout[Perso] Executive)
     \item 
-    Proj[Person](Sel[Code > 1](Person g cout(Code)(Executive)))
+    Proj[Person](Sel[Code $>$ 1](GroupBy[Person]Cout[Code] Executive)
     \item 
     List the Industry which have only one Company:\\
-    Rename[Proj[Industry](Sel[Code = 1](Industry g cout(Code)(Proj[Code, Industry](Category))))](R1)\\
+    Rename[Proj[Industry](Sel[Code = 1](GroupBy[Industry]Cout[Code] (Proj[Code, Industry](Category))))](R1)\\
     Then list the code of those company and its Industry:\\
     Proj[Code, Industry](R1 Join Category)
 \end{enumerate}
 
 
 \section*{Question 3}
-\renewcommand{\labelenumi}{\roman{enumi}. }
-\begin{enumerate}
-    \item
-    \begin{tabular}{ | c | c | c |}
+    \begin{tabular}{ | c | c | c | c |}
         \hline
-        Expression & Max & Min\\
+        No. & Expression & Max & Min\\
         \hline
-        R UNION (S INTERSECT T) & $r+min(s,t)$ & 0, when $S \land T = \emptyset $\\
+        i & R UNION (S INTERSECT T) & $r+min(s,t)$ & 0, when $S \land T = \emptyset $\\
         \hline
-        Sel[C](RxS) & r*s & 0, if the condition can not meet \\
+        ii & Sel[C](RxS) & r*s & 0, if the condition can not meet \\
         \hline
-        R-PROJ[A](R JOIN S) & r, when R Join S = $\emptyset$ & 0\\
+        iii &R-PROJ[A](R JOIN S) & r, when R Join S = $\emptyset$ & 0\\
         \hline
     \end{tabular}
-\end{enumerate}
 
 
 \section*{Question 4}
-\begin{enumerate}[(a)]
-    \item
+\renewcommand{\labelenumi}{\roman{enumi}. }
+\begin{enumerate}
+    \item draw a table\\
+    \begin{tabular}{ | c | c | c |c | c | c |c | c | c |}
+        \hline
+        T1 & R(X) &      & W(X) &      &      & R(Y) & W(Y) &     \\
+        \hline
+        T2 &      & R(X) &      & W(X) & R(Y) &      &      & W(X)\\
+        \hline
+    \end{tabular}
+    \begin{center}
+        \includegraphics[scale=0.7]{41}
+    \end{center}
+    there is circle, so it is not schedule serialisable
+    \item draw a table\\
+    \begin{tabular}{ | c | c | c |c | c | c |c | c | c |}
+        \hline
+        T1 &      &      &      & W(Y) &      &      &      & R(X)\\
+        \hline
+        T2 &      &      &      &      & R(Y) &      & W(X) &     \\
+        \hline
+        T3 & R(X) &      &      &      &      & R(D) &      &     \\
+        \hline
+        T4 &      & W(Y) & W(Z) &      &      &      &      &     \\
+        \hline
+    \end{tabular}
+    \begin{center}
+        \includegraphics[scale=0.7]{42}
+    \end{center}
+    there is no circle, so it is schedule serialisable
 \end{enumerate}
 
 \end{document}
