@@ -1,6 +1,6 @@
-# 1. Introduction, Data Modelling, ER Notation
+# COMP9311 Review
 
-## Introduction
+## 1. Introduction, Data Modelling, ER Notation
 
 ### General
 
@@ -12,10 +12,8 @@
 ### Database system languages
 
 - DML: data manipulation language, such as queries, updates
-- DDL: data defination language, such as data structure, constraints
+- DDL: data definition language, such as data structure, constraints
 - PL/SQL: Procedural Language/Structured Query Language
-
-## Data Modleing
 
 ### ER: Entity Relationship
 
@@ -42,7 +40,7 @@
   - never changing
 - composite primary key
   - use fewest attribute
-  - nerver changing
+  - never changing
 - FK: foreign key
   - a primary key stored in a foreign table
 - superkey(keys):
@@ -59,24 +57,148 @@
 - partial
 - total
 
-# 2. Relational Model, ER-Relational Mapping, SQL Schemas
+## 2. Relational Model, ER-Relational Mapping, SQL Schemas
 
-## Relational Data Modle
+### Relational Data Model
 
 - a collection of inter-connected relations (or tables), must has a key
   - relation ~ table
   - tuple ~ row ~ record
   - attribute ~ column ~ field
-- shechma
-  - description or defination of database
-  - not expected to change frenquently
+- schema
+  - description or definition of database
+  - not expected to change frequently
   - a set of table and integrity constraint
 - instance
-  - a snapshot of database at a monment
+  - a snapshot of database at a moment
   - all the integrity constraint are satisfied
 - metadata
   - data about data
-  - for example: schma
+  - for example: schema
+
+### Difference between ER and relational Model
+
+- Rel has no composite or multi-valued attributes (atomic)
+- Rel has no subclass or inheritance
+- ![mapping multi-valued attribute](mapmva.png)
+- ![ER style subclass mapping](mapsubclass.png)
+
+```text
+
+FavColour(12345, red)
+FavColour(12345, green)
+FavColour(12345, blue)
+FavColour(54321, green)
+FavColour(54321, purple)
+
+```
+
+### Mapping ER to relational model
+
+- to be noticed:
+  - this mapping lack of constraints
+- binary relationship
+  - ![Mapping strong entities](strongent.png)
+  - ![Mapping 1:n or 1:1 relationships](mapwkent.png)
+  - ![Mapping N:M Relationships](mapnnrel.png)
+    - a separate table is needed
+- n-ways relationships
+  - ![first method](medical1.png)
+
+```postgreSQL
+
+  -- Mapping of ER diagram with Prescription as relationship
+
+create domain NameValue as varchar(100) not null;
+--  character varying (100)
+
+create table Drug (
+	dno         integer, -- unique not null because PK
+	name        NameValue unique, -- not null from domain
+	formula     text,    -- can be null
+	primary key (dno)
+);
+
+create table Patient (
+	pid         integer,  -- unique not null because PK
+	name        NameValue, -- not null from domain
+	address     text not null,
+	primary key (pid)
+);
+
+create table Doctor (
+	tfn         integer, -- unique not null because PK
+	name        NameValue, -- not null from domain
+	specialty   text not null,
+	primary key (tfn)
+);
+
+create table Prescribes (
+	drug        integer references Drug(dno),
+	doctor      integer not null references Doctor(tfn),
+	patient     integer references Patient(pid),
+	quantity    integer not null,
+	"date"      date,
+	primary key ("date",patient,drug)
+	-- allows a patient to be prescribed 
+	-- a given drug only once on a given day 
+);
+
+-- think about the implications of alternative primary keys
+-- primary key(patient)
+-- primary key(drug)
+-- primary key("date")
+-- primary key(patient,"date")
+-- primary key(patient,"date",drug,doctor)
+
+```
+
+  - ![second method](medical2.png)
+
+```postgreSQL
+
+-- Mapping of ER diagram with Prescription as an Entity
+
+create domain NameValue as varchar(100) not null;
+--  character varying (100)
+
+create table Drug (
+	dno         integer, -- unique not null because PK
+	name        NameValue unique, -- not null from domain
+	formula     text,    -- can be null
+	primary key (dno)
+);
+
+create table Patient (
+	pid         integer,  -- unique not null because PK
+	name        NameValue, -- not null from domain
+	address     text not null,
+	primary key (pid)
+);
+
+create table Doctor (
+	tfn         integer, -- unique not null because PK
+	name        NameValue, -- not null from domain
+	specialty   text not null,
+	primary key (tfn)
+);
+
+create table Prescription (
+	prNum       integer,
+	"date"      date not null,
+	doctor      integer not null references Doctor(tfn), -- n:1 relationship
+	patient     integer not null references Patient(pid), -- n:1 relationship
+	primary key (prNum)
+);
+
+create table PrescriptionItem (
+	prescription integer references Prescription(prNum),
+	drug         integer references Drug(dno),
+	quantity     integer check (quantity > 0),
+	primary key  (prescription,drug)
+);
+
+```
 
 ### DBMS Terminology
 
@@ -95,20 +217,20 @@
   - the value must exist / or null
   - is a primary key in another table
 
-# 3. DBMSs, Databases, Data Modification
+## 3. DBMS, Databases, Data Modification
 
-# 4. SQL Queries
+## 4. SQL Queries
 
-# 5. More SQL Queries, Stored Procedures
+## 5. More SQL Queries, Stored Procedures
 
-# 6. Extending SQL: Queries, Functions, Aggregates, Triggers
+## 6. Extending SQL: Queries, Functions, Aggregates, Triggers
 
-# 7. More Triggers, Programming with Databases
+## 7. More Triggers, Programming with Databases
 
-# 8. Catalogs, Privileges
+## 8. Catalogs, Privileges
 
-# 9. Relational Design Theory, Normal Forms
+## 9. Relational Design Theory, Normal Forms
 
-# 10. Relational Algebra, Query Processing
+## 10. Relational Algebra, Query Processing
 
-# 11. Transaction Processing, Concurrency Control
+## 11. Transaction Processing, Concurrency Control
