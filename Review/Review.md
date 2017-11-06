@@ -672,8 +672,21 @@ ON TableName
 [ WHEN ( Condition ) ]
 Block of Procedural/SQL Code ;
 
---Event; INSERT, DELETE, UPDATE
 ```
+
+### Event
+
+- INSERT
+  - before
+  - after
+
+- DELETE
+  - before
+  - after
+  
+- UPDATE
+  - before
+  - after
 
 ## 7. More Triggers, Programming with Databases
 
