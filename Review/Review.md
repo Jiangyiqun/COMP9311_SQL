@@ -672,21 +672,114 @@ ON TableName
 [ WHEN ( Condition ) ]
 Block of Procedural/SQL Code ;
 
+create trigger checkstate
+before insert or update
+for each row
+on Person
+execute procedure checkstate();
+
+create function checkstate()
+  returns trigger
+ as $$
+  new.state = upper(trim(new.state);
+  if (new.state !~ '^[A-Z][A-Z]$') then
+    raise exception 'Code must be two alpha chars';
+   end if;
+   select * from State where code=new.state
+   if (not found) then
+    raise exception 'invalid code %', new.state;
+   end if;
+   return new;
+ $$ language plpgsql;
+ 
+ 
+ -- New employee
+ create trigger TotalSalary1
+ after insert on Employees
+ for each row
+ excute procedure totalsalary1();
+ 
+ create function total salary()
+ returns trigger
+ as $$
+ begin
+  if (new.dept is not null) then
+    update Department
+      set totsal = totsal + new.salary
+      where Department.id = new.dept;
+   end if;
+  return news;
+ end;
+ $$ language plpgsql;
+ 
+ -- Change department
+ create trigger totalsalary2
+ after update on Employee
+ for each row
+ excute procedure totalsalary2();
+ 
+ create function totalsalary2()
+ returns trigger
+ as $$
+  begin
+    update Department
+      set totsal = totsal + new.salary
+      where department.id = new.department;
+    update Department
+      set totsal = totsal - old.salary
+      where department.id = old.department;
+    return new;
+  end;
+ $$ language plpgsql;
+ 
+ 
+- employee leave
+create trigger totalsalary3
+after delete on employee
+for each row
+execte procedure totalsalary3();
+
+create function totalsalary3()
+returns trigger
+as $$
+  begin
+    if (old.dept is not null) then
+      update department
+        set total = total - old.salary
+        where department.id = old.dept;
+     end if;
+     return old;
+  end;
+$$ language plpgsql;
 ```
 
 ### Event
 
 - INSERT
   - before
+    - check(modify) values of NEW
+    - constraint checking
+    - if failds, abort and rollback
   - after
-
+    - check values via NEW, 
+    - modify other tables to satisfy constraints
 - DELETE
   - before
+     - access current tuple via OLD
+     - constraint checking
+     - if failds, abort and rollback
   - after
-  
+     - access current tuple via OLD
+     - modify other tables to satisfy constraints
 - UPDATE
   - before
+    - access current tuple via OLD
+    - check(modify) values of NEW
+    - constraint checking
+    - if failds, abort and rollback
   - after
+    - check values via NEW, 
+    - modify other tables to satisfy constraints
 
 ## 7. More Triggers, Programming with Databases
 
