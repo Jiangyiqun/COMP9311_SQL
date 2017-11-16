@@ -48,7 +48,9 @@
 - candidate key:
   - no subset is superkey
 - weak entity:
-  - In more technical terms it can be defined as an entity that cannot be identified by its own attributes. It uses a foreign key combined with its attributed to form the primary key.
+  - In more technical terms it can be defined as an entity that cannot be identified
+  
+   by its own attributes. It uses a foreign key combined with its attributed to form the primary key.
 
 ### Subclass
 
@@ -200,7 +202,7 @@ create table PrescriptionItem (
 
 ```
 
-- ![Mapping Disjoint or Overlapping subclasses](StudentD)
+- ![Mapping Disjoint or Overlapping subclasses](StudentD.png)
 
 ```postgreSQL
 
