@@ -1,5 +1,10 @@
 # COMP9311 Review
 
+## 0. Backgroud
+
+- [ACID](https://database.guide/what-is-acid-in-databases/)
+- 效率
+
 ## 1. Introduction, Data Modelling, ER Notation
 
 ### General
@@ -42,10 +47,13 @@
   - use fewest attribute
   - never changing
 - FK: foreign key
+  
   - a primary key stored in a foreign table
 - superkey(keys):
+  
   - distinct
 - candidate key:
+  
   - no subset is superkey
 - weak entity:
   - In more technical terms it can be defined as an entity that cannot be identified
